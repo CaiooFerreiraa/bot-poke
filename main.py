@@ -6,6 +6,7 @@ import pytesseract
 
 name1 = "awailcharmander"
 name2 = "wildcharmander"
+pokemonSucessCaugth = "success!youcaughtcharmander"
 
 # Caminho do Tesseract OCR
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
@@ -13,6 +14,7 @@ pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tessera
 cond = True
 
 def captura():
+    time.sleep(5)
     # Tirar nova screenshot
     screenshot = imageGrab.grab()
     screenshot.save("test.jpeg", "JPEG")
@@ -22,16 +24,19 @@ def captura():
     cropped_image = img.crop(crop_area)
 
     text = pytesseract.image_to_string(cropped_image)
+    normalized_text = text.lower().replace(" ", "")
 
     while True:
         pyautogui.press('3')
         print(f"[Captura] Texto encontrado: {text.strip()}")
-        if "False Swipe" in text:
-            print("[Captura] Capturando...")
-            pyautogui.press('1')
-        else:
+        #caught Charmander
+        if pokemonSucessCaugth in normalized_text:
             print("[Captura] A captura terminou.")
             break
+        else:
+            print("[Captura] Capturando...")
+            pyautogui.press('1')
+
 
         # Espera e captura novamente
         time.sleep(2)
